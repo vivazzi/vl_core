@@ -32,7 +32,7 @@ INSTALLED_APPS = (
 
 ## Base plugins
 
-1. Snippet: https://github.com/vivazzi/vl_core
+1. Snippet: https://github.com/vivazzi/vl_snippet
 
 Other plugins with old version (first version was named SBL) are non-compatible, but you can look to these plugins
 and take ideas for your project or help me upgrade old plugins to new version (please use pull request for it).
