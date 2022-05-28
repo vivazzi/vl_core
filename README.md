@@ -17,6 +17,13 @@ There is no vl_core in PyPI, so you can install this package from repository onl
 $ pip install git+https://github.com/vivazzi/vl_core.git
 ```
 
+Also, you need install django-vite from repo: `https://github.com/vivazzi/django-vite/tree/multi-config` - this is fork
+with extended functionality:
+
+```shell
+$ pip install git+https://github.com/vivazzi/django-vite.git@multi-config
+```
+
 ## Configuration
 
 Add "vl_core" to INSTALLED_APPS
