@@ -1,6 +1,9 @@
 .language_button:not(.selected) {background: #bbb;}
 
-.inline-group .aligned label {width: auto;}
+.inline-group {
+    overflow: auto;
+    .aligned label {width: auto;}
+}
 
 textarea.cke_source {max-height: initial;}
 
