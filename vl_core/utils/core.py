@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Union
 
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from django.core.management import call_command
 from django.utils.translation import gettext as _
 
@@ -19,7 +20,39 @@ def project_years(start_year: int, separate: str = '−') -> str:
 
 
 def random_seq(length: int = 5, seq: str = ALPHABET_AND_DIGITS) -> str:
+    # noinspection PyArgumentList
     return ''.join(random.choices(seq, k=length))
+
+
+def unique_random_seq_for_model_field(model_class, par: str, excluded_obj=None, length: int = 5, seq: str = ALPHABET_AND_DIGITS) -> str:
+    """
+    Example:
+
+    def save(self, *args, **kwargs):
+        if not self.token:
+            self.token = get_unique_random_seq(self._meta.model, 'token', None, 40)
+
+        return super().save(*args, **kwargs)
+    """
+    objects = model_class.objects
+    if excluded_obj and excluded_obj.pk:
+        if not isinstance(excluded_obj, model_class):
+            # noinspection PyProtectedMember
+            raise ImproperlyConfigured(f'"{excluded_obj._meta.object_name}" class of parameter "excluded_obj" is not equal '
+                                       f'with model class ("{model_class._meta.object_name}"). "excluded_obj" must be same class type as model.')
+
+        objects = objects.exclude(pk=excluded_obj.pk)
+
+    count = 0
+    max_count = 10000000000000000
+    while count < max_count:
+        field_value = random_seq(length, seq)
+        if objects.filter(**{par: field_value}).count() == 0:
+            return field_value
+
+        count += 1
+
+    raise Exception('get_unique_random_seq loops infinitely')
 
 
 def send_mails_if_debug() -> None:
