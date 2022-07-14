@@ -1,13 +1,15 @@
 (function($){
     // workaround for functionality "Add another" button in inline forms
-    $().ready(function() {
-        $('.add-row a').click(function () {
-            let $add_row_a = $(this)
-            setTimeout(function() {
-                // call color_picker in new .form-row for all color_picker_inputs
-                $add_row_a.parents('form').find('.form-row').not('.empty-form').last().find('.color_picker [type=text]').color_picker()
-            }, 100);
-        })
+    $(document).ready(function() {
+        setTimeout(function() {  // workaround: "Add another" button does not have time to load on the page
+            $('.add-row a').click(function () {
+                let $add_row_a = $(this)
+                setTimeout(function() {  // workaround: new ".form-row" does not have time to load on the page
+                    // call color_picker in new .form-row for all color_picker_inputs
+                    $add_row_a.parents('form').find('.form-row').not('.empty-form').last().find('.color_picker [type=text]').color_picker()
+                }, 100);
+            })
+        }, 100);
     })
 
     $.fn.color_picker = function(method) {
