@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="color_picker color_picker_{{ name }}">
+<div class="color_picker">
     {{ input_html }}
     <div class="picker_wr">
         {% if old_color %}<div class="color old_color" style="background-color: {{ old_color }}"></div>{% endif %}
@@ -15,7 +15,7 @@
 
 <script>
     (function($){
-        $('.color_picker_{{ name }}').color_picker({
+        $('#id_{{ name }}').color_picker({
             {% if color %}'color': '{{ color }}'{% endif %}
         });
     })(django.jQuery);

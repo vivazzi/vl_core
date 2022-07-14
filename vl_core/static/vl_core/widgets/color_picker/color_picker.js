@@ -1,4 +1,15 @@
 (function($){
+    // workaround for functionality "Add another" button in inline forms
+    $().ready(function() {
+        $('.add-row a').click(function () {
+            let $add_row_a = $(this)
+            setTimeout(function() {
+                // call color_picker in new .form-row for all color_picker_inputs
+                $add_row_a.parents('form').find('.form-row').not('.empty-form').last().find('.color_picker [type=text]').color_picker()
+            }, 100);
+        })
+    })
+
     $.fn.color_picker = function(method) {
         let opt = {
             'color': '#000'
@@ -61,8 +72,8 @@
                     }
 
                     // --- containers ---
-                    let $color_picker = $(this);
-                    let $input = $color_picker.find('[type=text]');
+                    let $input = $(this);
+                    let $color_picker = $input.parents('.color_picker');
                     let $picker = $color_picker.find('.picker');
                     let $range = $color_picker.find('.range');
                     let $opacity = $color_picker.find('.opacity_wr span');
@@ -123,7 +134,7 @@
 
                     $range.on('mousemove', function(){
                         if (can_change) {
-                            opacity = $(this).val();
+                            opacity = parseInt($(this).val());
                             set_opacity_label(opacity);
                             set_color(color, opacity);
                         }
