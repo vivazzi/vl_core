@@ -29,6 +29,11 @@ class Select2Widget(BaseSelect2Widget):
 
 
 class ColorPickerWidget(TextInput):
+    def __init__(self, attrs=None, use_opacity=True):
+        super().__init__(attrs)
+
+        self.use_opacity = use_opacity
+
     class Media:
         css = {'all': [sass_processor('vl_core/widgets/color_picker/color_picker.scss'), ]}
         extra = '' if settings.DEBUG else '.min'
@@ -40,6 +45,7 @@ class ColorPickerWidget(TextInput):
         context = {'name': name,
                    'color': value or '#000',
                    'old_color': value,
+                   'use_opacity': self.use_opacity,
                    'input_html': input_html}
         return render_to_string('vl_core/widgets/color_picker.html', context)
 

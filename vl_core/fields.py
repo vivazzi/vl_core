@@ -35,10 +35,11 @@ class TemplateField(CharField):
 class ColorField(CharField):
     def __init__(self, *args, **kwargs):
         kwargs['max_length'] = 30
+        self.use_opacity = kwargs.pop('use_opacity', True)
         super(ColorField, self).__init__(*args, **kwargs)
 
     def formfield(self, **kwargs):
-        kwargs['widget'] = ColorPickerWidget
+        kwargs['widget'] = ColorPickerWidget(use_opacity=self.use_opacity)
         return super(ColorField, self).formfield(**kwargs)
 
 
