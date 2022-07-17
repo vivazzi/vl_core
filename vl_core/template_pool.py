@@ -9,7 +9,7 @@ class Template:
     def get_template(self, instance, context=None, *args, **kwargs):
         return self.template
 
-    def get_context(self, instance, context=None, *args, **kwargs):
+    def get_context(self, *args, **kwargs):
         return {}
 
     def clean(self, form):
