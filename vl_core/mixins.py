@@ -37,7 +37,7 @@ class RenderTemplateMixin:
         if instance.template:
             template_class = template_pool.get_template(instance, instance.template)
             if template_class:
-                context.update(template_class().get_context(**{'instance': instance, 'context': context}))
+                context.update(template_class().get_context(instance=instance, plugin_context=context))
 
         return context
 
