@@ -1,5 +1,5 @@
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Union
 
 from django.conf import settings
@@ -133,7 +133,7 @@ def humanize_bytes(n: int, precision: int = 2) -> str:
     return '%.*f %s' % (precision, float(n) / factor, suffix)
 
 
-def convert_seconds(seconds: float, sec_precision: int = 0, sec_precision_for_small_time: int = 4,
+def convert_seconds(seconds: Union[float, timedelta], sec_precision: int = 0, sec_precision_for_small_time: int = 4,
                     exclude_minutes: bool = False, exclude_hours: bool = False, exclude_days: bool = False, exclude_weeks: bool = False,
                     round_by_minutes: bool = False, round_by_hours: bool = False, round_by_days: bool = False, round_by_weeks: bool = False) -> str:
     """
@@ -154,7 +154,7 @@ def convert_seconds(seconds: float, sec_precision: int = 0, sec_precision_for_sm
     >>> convert_seconds(90060, exclude_hours=True)  # do not use hours (minutes and seconds accordingly); 90060 secs = 1 days 1 hours and 1 minute
     '1 d.'
 
-    :param seconds: time duration in seconds
+    :param seconds: time duration in seconds or timedelta object
     :param sec_precision: this presicion will be apply, if time duration more 1 minute
     :param sec_precision_for_small_time: this presicion will be applied, if time duration less 1 minute
     :param exclude_minutes: if False, then minutes, hours, days and weeks will not be used
@@ -167,6 +167,9 @@ def convert_seconds(seconds: float, sec_precision: int = 0, sec_precision_for_sm
     :param round_by_weeks: if True, round by weeks (by floor)
     :return: formatted string of time duration
     """
+    if isinstance(seconds, timedelta):
+        seconds = seconds.total_seconds()
+
     neg_sign = '-' if seconds < 0 else ''
     if seconds < 0:
         seconds *= -1
