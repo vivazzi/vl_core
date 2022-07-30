@@ -64,6 +64,7 @@ class UtilTest(TestCase):
 
         # excludes
         self.assertEqual('25 h. 0 m. 1 sec.', convert_seconds(day + hour + second, exclude_days=True))
+        self.assertEqual('1501 m. 0 sec.', convert_seconds(day + hour + minute, exclude_hours=True))
 
         # rounds
         self.assertEqual('1 h. 1 m.', convert_seconds(hour + minute + second, round_by_minutes=True))

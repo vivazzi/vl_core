@@ -152,7 +152,7 @@ def convert_seconds(seconds: Union[float, timedelta], sec_precision: int = 0, se
     >>> convert_seconds(90001, exclude_days=False)  # do not use days (and weeks accordingly)
     '25 h. 0 m. 1 sec.'
     >>> convert_seconds(90060, exclude_hours=True)  # do not use hours (minutes and seconds accordingly); 90060 secs = 1 days 1 hours and 1 minute
-    '1 d.'
+    '1501 m. 0 sec.'
 
     :param seconds: time duration in seconds or timedelta object
     :param sec_precision: this presicion will be apply, if time duration more 1 minute
