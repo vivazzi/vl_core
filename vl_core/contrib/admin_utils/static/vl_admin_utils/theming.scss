@@ -3,6 +3,11 @@
 .inline-group {
     overflow: auto;
     .aligned label {width: auto;}
+
+    .tabular {
+        td.original p {visibility: hidden;height: 0;}
+        tr.has_original td {padding-top: inherit;}
+    }
 }
 
 textarea.cke_source {max-height: initial;}
