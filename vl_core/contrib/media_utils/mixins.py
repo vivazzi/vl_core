@@ -102,10 +102,10 @@ class PicModelMixin(FileModelMixin):
         return mark_safe(get_thumb(field, self.thumb_size[0], self.thumb_size[1]))
     thumb.short_description = _('Thumbnail')
 
-    def fb_thumb(self, field_name=''):
+    def fb_pic(self, field_name=''):
         field = self.get_pic_field(field_name)
         return PicWidget(field.field.attname, use_input=False, use_resize_orig_image=False).render(field.field.attname, field)
-    thumb.short_description = _('Thumbnail')
+    fb_pic.short_description = _('Image')
 
     def remove_all_thumbs(self):
         for field_name in self.file_field_names:
