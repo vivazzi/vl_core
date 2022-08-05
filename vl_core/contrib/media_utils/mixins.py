@@ -10,6 +10,7 @@ from django.utils.translation import gettext_lazy as _
 
 from vl_core.contrib.media_utils.fields import FileField, PicField
 from vl_core.contrib.media_utils.templatetags.vl_thumb import thumb as get_thumb
+from vl_core.contrib.media_utils.widgets import PicWidget
 from vl_core.utils.os import is_file_changed
 
 
@@ -87,9 +88,23 @@ class FileModelMixin:
 class PicModelMixin(FileModelMixin):
     thumb_size = (135, 100)
 
-    def thumb(self, field_name='', **kwargs):
-        field = self.get_field(field_name)
+    def get_pic_field(self, field_name=''):
+        if not field_name:
+            for field in self._meta.fields:
+                if isinstance(field, PicField):
+                    field_name = field.attname
+                    break
+
+        return getattr(self, field_name)
+
+    def thumb(self, field_name=''):
+        field = self.get_pic_field(field_name)
         return mark_safe(get_thumb(field, self.thumb_size[0], self.thumb_size[1]))
+    thumb.short_description = _('Thumbnail')
+
+    def fb_thumb(self, field_name=''):
+        field = self.get_pic_field(field_name)
+        return PicWidget(field.field.attname, use_input=False, use_resize_orig_image=False).render(field.field.attname, field)
     thumb.short_description = _('Thumbnail')
 
     def remove_all_thumbs(self):
@@ -101,7 +116,14 @@ class PicModelMixin(FileModelMixin):
             field = self.get_field(field_name)
             if issubclass(field.field, PicField):
                 folder = dirname(field.path)
-                [remove(join(folder, f)) for f in listdir(folder) if f != basename(field.name)]
+                for f in listdir(folder):
+                    if f != basename(field.name): remove(join(folder, f))
+
+
+class FBThumbMediaMixin:
+    class Media:
+        # note: we cannot use import "from sass_processor.processor import sass_processor" (it is appeared bug with imports)
+        css = {'all': ['vl_media_utils/th.css', 'vl_media_utils/contrib/fancybox/fancybox.css', 'vl_media_utils/fb_wr.css']}
 
 
 # def _copy_relations_handler(obj, old_instance):

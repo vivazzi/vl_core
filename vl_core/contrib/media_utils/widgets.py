@@ -31,6 +31,10 @@ class PicMixin:
         return value
 
     def render(self, name, value, attrs=None, renderer=None, **kwargs):
+        text_input_html = ''
+        if getattr(self, 'use_input', True):
+            text_input_html = super().render(name, value, attrs, renderer, **kwargs)
+
         pic_html = ''
         if value and not isinstance(value, InMemoryUploadedFile):
             url, width, height = self.get_thumb(value, self.w, self.h)
@@ -43,10 +47,8 @@ class PicMixin:
                 pic_html = render_to_string('vl_media_utils/no_img.html', ctx)
             else:
                 pic_html = render_to_string(f'vl_media_utils/{"widgets/fb_wr" if self.use_fb else "adaptive_th_img"}.html', ctx)
-        return mark_safe(render_to_string(
-            'vl_media_utils/widgets/pic_input.html',
-            {'text_input_html': super().render(name, value, attrs, renderer, **kwargs), 'pic_html': pic_html}
-        ))
+
+        return mark_safe(render_to_string('vl_media_utils/widgets/pic_input.html', {'text_input_html': text_input_html, 'pic_html': pic_html}))
 
     def _get_media(self):
         css = [sass_processor('vl_media_utils/th.scss')]
@@ -65,6 +67,9 @@ class ResizeOrigImageMixin:
         return f'use_optimize_{self.attname}'
 
     def render(self, name, value, attrs=None, renderer=None, **kwargs):
+        if not getattr(self, 'use_resize_orig_image', True):
+            return super().render(name, value, attrs, renderer, **kwargs)
+
         text_input_html = super().render(name, value, attrs, renderer, **kwargs)
 
         checked = app_settings.PIC_FIELD_OPTIMIZE_PARS['checked_by_default']
@@ -118,7 +123,7 @@ class ResizeOrigImageMixin:
 
 
 class PicWidget(ResizeOrigImageMixin, PicMixin, ResubmitImageWidget):
-    def __init__(self, attname, attrs=None, w=None, h=None, th_type='contain', use_fb=True):
+    def __init__(self, attname, attrs=None, w=None, h=None, th_type='contain', use_fb=True, use_resize_orig_image=True, use_input=True):
         super().__init__(attrs)
 
         if not w and not h:
@@ -129,6 +134,8 @@ class PicWidget(ResizeOrigImageMixin, PicMixin, ResubmitImageWidget):
         self.th_type = th_type
         self.attname = attname
         self.use_fb = use_fb
+        self.use_resize_orig_image = use_resize_orig_image
+        self.use_input = use_input
 
     def get_thumb(self, value, w, h):
         return thumb_from_field(value, w, h)
