@@ -33,13 +33,33 @@ def _get_thumb_path(path: str, w: int, h: int):
     return f'{filename}_{w or 0}x{h or 0}{file_extension}'
 
 
-def thumb(path: str, w: int, h: int):
+def thumb(path: str, w: int, h: int, coordinates=None):
     thumb_path = _get_thumb_path(path, w, h)
     if exists(thumb_path):
         with Image.open(thumb_path) as pic:
             w, h = pic.size
     elif exists(path):
         with Image.open(path) as new_pic:
+            if coordinates:
+                if any(coordinates) != all(coordinates):
+                    raise Exception('You need specify all coordinates: x1, y1, x2, y2')
+
+                new_pic = new_pic.crop(coordinates)
+
+            # check aspect
+            if h:
+                thumb_ratio = w / h
+                new_pic_ratio = new_pic.width / new_pic.height
+                if thumb_ratio != new_pic_ratio:
+                    th_dimension_w = new_pic.width
+                    th_dimension_h = new_pic.width / thumb_ratio
+
+                    if th_dimension_h > new_pic.height:
+                        th_dimension_w = new_pic.height * thumb_ratio
+                        th_dimension_h = new_pic.height
+
+                    new_pic = new_pic.crop((0, 0, th_dimension_w, th_dimension_h))
+
             new_pic.thumbnail((w or 10000, h or 10000), resample=Image.ANTIALIAS)
             new_pic.save(thumb_path, **default_compress_settings(new_pic))
             w, h = new_pic.size
@@ -47,7 +67,7 @@ def thumb(path: str, w: int, h: int):
     return thumb_path, w, h
 
 
-def thumb_from_field(pic_field, w, h):
+def thumb_from_field(pic_field, w, h, coordinates):
     if isinstance(pic_field, InMemoryUploadedFile):
         return '', w, h
 
@@ -55,13 +75,13 @@ def thumb_from_field(pic_field, w, h):
         thumb_w, thumb_h = get_thumb_size(pic_field.width, pic_field.height, w, h)
         return pic_field.url, thumb_w, thumb_h
 
-    thumb_path, thumb_w, thumb_h = thumb(pic_field.path, w, h)
+    thumb_path, thumb_w, thumb_h = thumb(pic_field.path, w, h, coordinates)
     thumb_url = _get_thumb_path(pic_field.url, w, h)
 
     return thumb_url, thumb_w, thumb_h
 
 
-def thumb_data(field, width=None, height=None):
+def thumb_data(field, width=None, height=None, coordinates=None):
     ctx = {'is_exists': True}
 
     if not field:  # if field is empty (file did not load in admin)
@@ -82,7 +102,7 @@ def thumb_data(field, width=None, height=None):
         height = field.height
 
     else:
-        url, width, height = thumb_from_field(field, width, height)
+        url, width, height = thumb_from_field(field, width, height, coordinates)
 
     ctx.update({'url': url,
                 'width': width, 'height': height,
@@ -91,19 +111,20 @@ def thumb_data(field, width=None, height=None):
     return ctx
 
 
-def thumb_html(field, width=None, height=None, th_type='cover', tag='img', silent=False):
+def thumb_html(field, width=None, height=None, coordinates=None, th_type='cover', tag='img', silent=False):
     """
     Get thumb as html
 
     :param field:
     :param width:
     :param height:
+    :param coordinates: (x1, y1, x2, y2)
     :param th_type: cover or contain
     :param tag: html tag
     :param silent: silent for empty. If True, no display anything
     :return:
     """
-    ctx = thumb_data(field, width, height)
+    ctx = thumb_data(field, width, height, coordinates)
 
     ctx.update({
         'th_type': th_type,
