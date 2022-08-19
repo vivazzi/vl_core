@@ -41,8 +41,8 @@ def thumb(path: str, w: int, h: int, coordinates=None):
     elif exists(path):
         with Image.open(path) as new_pic:
             if coordinates:
-                if any(coordinates) != all(coordinates):
-                    raise Exception('You need specify all coordinates: x1, y1, x2, y2')
+                if len(coordinates) != 4:
+                    raise Exception('You need specify coordinates: (x1, y1, x2, y2)')
 
                 new_pic = new_pic.crop(coordinates)
 
