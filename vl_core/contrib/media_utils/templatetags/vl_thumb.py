@@ -11,5 +11,5 @@ def do_thumb_data(field, width=None, height=None):
 
 
 @register.simple_tag
-def thumb(field, width=None, height=None, th_type='cover', tag='img', silent=False):
-    return thumb_html(field, width, height, th_type, tag, silent)
+def thumb(field, width=None, height=None, coordinates=None, th_type='cover', tag='img', silent=False):
+    return thumb_html(field, width, height, coordinates, th_type, tag, silent)

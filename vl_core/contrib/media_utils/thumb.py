@@ -7,21 +7,6 @@ from django.template.loader import render_to_string
 from vl_core.contrib.media_utils.utils import default_compress_settings
 
 
-def get_thumb_size(orig_w, orig_h, w=None, h=None):
-    if not w and not h:
-        raise Exception('You need set width or height size')
-
-    if w and h:
-        return w, h
-
-    ratio = orig_w / orig_h
-
-    if not w:
-        return ratio * h, h
-
-    return w, w / ratio
-
-
 def _get_thumb_path(path: str, w: int, h: int):
     """
     :param path: path, url or name only
@@ -47,7 +32,7 @@ def thumb(path: str, w: int, h: int, coordinates=None):
                 new_pic = new_pic.crop(coordinates)
 
             # check aspect
-            if h:
+            if w and h:
                 thumb_ratio = w / h
                 new_pic_ratio = new_pic.width / new_pic.height
                 if thumb_ratio != new_pic_ratio:
@@ -60,11 +45,28 @@ def thumb(path: str, w: int, h: int, coordinates=None):
 
                     new_pic = new_pic.crop((0, 0, th_dimension_w, th_dimension_h))
 
-            new_pic.thumbnail((w or 10000, h or 10000), resample=Image.ANTIALIAS)
+            # if w or h is unknown, we can use big number.
+            # We can do it, since thumbnail() calculate right aspect ratio of image and apply to new image (i.e. replacing it)
+            new_pic.thumbnail((w or 100000, h or 100000), resample=Image.ANTIALIAS)
             new_pic.save(thumb_path, **default_compress_settings(new_pic))
             w, h = new_pic.size
 
     return thumb_path, w, h
+
+
+def _get_thumb_size(orig_w, orig_h, w=None, h=None):
+    if not w and not h:
+        raise Exception('You need set width or height size')
+
+    if w and h:
+        return w, h
+
+    ratio = orig_w / orig_h
+
+    if not w:
+        return ratio * h, h
+
+    return w, w / ratio
 
 
 def thumb_from_field(pic_field, w, h, coordinates):
@@ -72,7 +74,7 @@ def thumb_from_field(pic_field, w, h, coordinates):
         return '', w, h
 
     if exists(pic_field.path) and pic_field.is_svg():
-        thumb_w, thumb_h = get_thumb_size(pic_field.width, pic_field.height, w, h)
+        thumb_w, thumb_h = _get_thumb_size(pic_field.width, pic_field.height, w, h)
         return pic_field.url, thumb_w, thumb_h
 
     thumb_path, thumb_w, thumb_h = thumb(pic_field.path, w, h, coordinates)
@@ -131,10 +133,10 @@ def thumb_html(field, width=None, height=None, coordinates=None, th_type='cover'
         'ratio_percent': ctx['ratio'] * 100,
     })
 
-    if not ctx['is_exists'] and not silent:
-        return render_to_string('vl_media_utils/no_img.html', ctx)
+    if not ctx['is_exists']:
+        if silent:
+            return ''
 
-    if not ctx['is_exists'] and silent:
-        return ''
+        return render_to_string('vl_media_utils/no_img.html', ctx)
 
     return render_to_string(f'vl_media_utils/adaptive_th_{tag}.html', ctx)
