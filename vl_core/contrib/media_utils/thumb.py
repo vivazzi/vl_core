@@ -69,7 +69,7 @@ def _get_thumb_size(orig_w, orig_h, w=None, h=None):
     return w, w / ratio
 
 
-def thumb_from_field(pic_field, w, h, coordinates):
+def thumb_from_field(pic_field, w, h, coordinates=None):
     if isinstance(pic_field, InMemoryUploadedFile):
         return '', w, h
 
