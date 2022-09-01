@@ -1,23 +1,11 @@
 import json
 
 from django import template
-from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 
-from vl_core.utils.core import project_years
 from vl_core.utils.url import with_domain, get_domain
 
 register = template.Library()
-
-
-@register.simple_tag
-def company_name():
-    return getattr(settings, 'COMPANY_NAME', '')
-
-
-@register.simple_tag(name='project_years')
-def do_project_years(start_year, separate='−'):
-    return project_years(start_year, separate)
 
 
 @register.filter(name='format')

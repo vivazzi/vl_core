@@ -1,18 +1,11 @@
 from django.test import TestCase
 
 from vl_core.constants import ALPHABET_AND_DIGITS
-from vl_core.utils.core import without_zero, humanize_bytes, convert_seconds, project_years, random_seq
-from datetime import datetime
+from vl_core.utils.core import without_zero, humanize_bytes, convert_seconds, random_seq
 
 
 class UtilTest(TestCase):
     maxDiff = None
-
-    def test_project_years(self):
-        current_year = datetime.now().year
-        self.assertEqual(f'{2020}−{current_year}', project_years(2020))
-        self.assertEqual(f'{2020} − {current_year}', project_years(2020, ' − '))
-        self.assertEqual(f'{current_year}', project_years(current_year))
 
     def test_random_seq(self):
         seq = random_seq(length=5, seq=ALPHABET_AND_DIGITS)

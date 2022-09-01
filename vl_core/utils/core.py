@@ -1,5 +1,5 @@
 import random
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Union
 
 from django.conf import settings
@@ -8,15 +8,6 @@ from django.core.management import call_command
 from django.utils.translation import gettext as _
 
 from vl_core.constants import ALPHABET_AND_DIGITS
-
-
-def project_years(start_year: int, separate: str = '−') -> str:
-    current_year = datetime.now().year
-
-    if start_year < current_year:
-        return f'{start_year}{separate}{current_year}'
-
-    return str(start_year)
 
 
 def random_seq(length: int = 5, seq: str = ALPHABET_AND_DIGITS) -> str:

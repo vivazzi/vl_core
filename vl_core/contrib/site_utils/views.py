@@ -88,7 +88,7 @@ def send_test_letter(request):
             mail.send(request.user.email, me, subject=subject, html_message=message, headers=headers)
             send_mails_if_debug()
 
-    me = f'{settings.COMPANY_NAME} <{settings.EMAIL_HOST_USER}>'
+    me = f'<{settings.EMAIL_HOST_USER}>'
     subject = 'Test message'
 
     message = _('<p><strong>Test html message. This text must be bold</strong>.<br/>'
