@@ -22,8 +22,8 @@ def upload_to_handler(instance, filename):
     filename = '.'.join(slugify(p) for p in unidecode(filename).split('.'))
     upload_to = instance.upload_to
 
-    length = 4
-    max_length = 10
+    length = getattr(instance, 'UPLOAD_TO_HANDLER_FOLDER_LENGTH', 4)
+    max_length = length + 6
     trying = 0
     max_trying = None
     while True:
