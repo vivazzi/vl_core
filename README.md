@@ -31,6 +31,7 @@ Add "vl_core" to INSTALLED_APPS
 ```python
 INSTALLED_APPS = (
     ...
+    'django_vite',
     'vl_core',
     ...
 )
