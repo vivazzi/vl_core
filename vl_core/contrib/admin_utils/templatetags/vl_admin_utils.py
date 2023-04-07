@@ -20,4 +20,4 @@ def theming_url():
 
 @register.simple_tag
 def admin_favicon_url():
-    return  staticfiles_storage.url(app_settings.ADMIN_FAVICON_URL)
+    return staticfiles_storage.url(app_settings.ADMIN_FAVICON_URL)
