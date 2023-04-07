@@ -37,7 +37,6 @@ setup(
         'django>=3.2.6',
         'django-cms>=3.9.0',
         'django-file-resubmit>=0.5.2',
-        'django-sass-processor>=1.0.1',
         'requests>=2.26.0',
         'django-select2>=7.7.1',
         'unidecode>=1.3.0',
