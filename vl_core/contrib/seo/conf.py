@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 
 from vl_core.conf import BaseAppSettings, app_settings as core_app_settings
@@ -12,14 +13,22 @@ class AppSettings(BaseAppSettings):
 
     @property
     def SITEMAP_PATH(self):
-        return self._setting('VL_SITEMAP_PATH', '/sitemap.xml')
+        return self._setting('VL_SITEMAP_PATH', settings.MEDIA_ROOT / 'sitemap.xml')
+
+    @property
+    def SITEMAP_URL(self):
+        return self._setting('VL_SITEMAP_URL', '/sitemap.xml')
 
     @property
     def FULL_SITEMAP_PATH(self):
         def get_default_sitemap_path():
-            return f'{core_app_settings.PROTOCOL}://{get_current_site(None).domain}{self.SITEMAP_PATH}'
+            return f'{core_app_settings.PROTOCOL}://{get_current_site(None).domain}{self.SITEMAP_URL}'
 
         return self._setting('VL_FULL_SITEMAP_PATH', get_default_sitemap_path())
+
+    @property
+    def ROBOTS_PATH(self):
+        return self._setting('VL_ROBOTS_PATH', settings.MEDIA_ROOT / 'robots.txt')
 
     @property
     def NOTIFICATIONS_FOR_SEARCH_ENGINES(self):
