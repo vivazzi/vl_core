@@ -35,7 +35,6 @@ setup(
     ],
     install_requires=[
         'django>=3.2.6',
-        'django-cms>=3.9.0',
         'django-file-resubmit>=0.5.2',
         'requests>=2.26.0',
         'django-select2>=7.7.1',
