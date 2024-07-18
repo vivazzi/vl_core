@@ -1,4 +1,3 @@
-from django.db.models import Max
 from django.template.loader import select_template
 from django.urls import reverse
 

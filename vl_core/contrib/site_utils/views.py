@@ -2,7 +2,6 @@ import io
 import sys
 import time
 
-from cms.models import CMSPlugin
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.decorators import user_passes_test
@@ -16,7 +15,6 @@ from django.utils.translation import gettext as _
 from django.core import management
 from django.core.management import CommandError
 
-from cms.plugin_pool import plugin_pool
 from django.views import View
 
 from vl_core.constants import FRONTEND_MANIFEST_PATH, FRONTEND_STATIC_URL_PREFIX
@@ -40,38 +38,6 @@ def utils(request):
         },
     }
     return render(request, 'vl_site_utils/site_utils.html', ctx)
-
-
-@user_passes_test(lambda u: u.is_staff)
-def get_used_components(request):
-    components = []
-    unused_components = []
-    for plugin_name in plugin_pool.plugins.keys():
-        plugins = CMSPlugin.objects.filter(plugin_type=plugin_name)
-        pages = set()
-        for plugin in plugins:
-            if plugin.placeholder.page:
-                if plugin.placeholder.page.publisher_is_draft:
-                    pages.add((plugin.placeholder.page.get_title(), plugin.placeholder.page.get_absolute_url()))
-            else:
-                slot_name = plugin.placeholder.slot
-                if slot_name == 'clipboard':
-                    pages.add((_('In clipboard'), None))
-                    continue
-
-                if plugin.placeholder.slot in settings.CMS_PLACEHOLDER_CONF:
-                    slot_name = settings.CMS_PLACEHOLDER_CONF[slot_name].get('name', slot_name)
-                pages.add((_('In a static placeholder "{}"').format(slot_name), None))
-
-        if pages:
-            components.append({
-                'title': plugin_name,
-                'pages': [{'title': page[0], 'url': page[1]} for page in list(pages)],
-            })
-        else:
-            unused_components.append(plugin_name)
-
-    return JsonResponse({'components': components, 'unused_components': unused_components})
 
 
 @user_passes_test(lambda u: u.is_staff)
@@ -182,7 +148,6 @@ def site_utils_app(request):
         'urls': {
             'base_menu': reverse('vl_site_utils:utils'),
 
-            'get_used_components': reverse('vl_site_utils_api:get_used_components'),
             'send_test_letter': reverse('vl_site_utils_api:send_test_letter'),
             'speed_up': reverse('vl_site_utils_api:speed_up'),
             'run_command': reverse('vl_site_utils_api:run_command'),

@@ -10,6 +10,7 @@ const {set_urls, set_locale, set_config, add_app_errors} = state
 
 const _locale = define_locale_from_url()
 
+
 axios.get(window.app_config.app_config_url)
     .then(function (response) {
         set_urls(response.data.urls)

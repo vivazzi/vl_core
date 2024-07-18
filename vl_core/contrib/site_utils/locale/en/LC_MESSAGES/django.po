@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-15 12:56+0800\n"
+"POT-Creation-Date: 2024-03-17 07:32+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,30 +25,32 @@ msgstr ""
 msgid "Parameters"
 msgstr ""
 
-#: contrib/site_utils/templates/vl_site_utils/site_utils.html:9
+#: contrib/site_utils/templates/vl_site_utils/site_utils.html:8
 msgid "Home"
 msgstr ""
 
-#: contrib/site_utils/views.py:32
+#: contrib/site_utils/views.py:34
 msgid "Site utilities"
 msgstr ""
 
-#: contrib/site_utils/views.py:52
+#: contrib/site_utils/views.py:59
 msgid "In clipboard"
 msgstr ""
 
-#: contrib/site_utils/views.py:57
+#: contrib/site_utils/views.py:64
 msgid "In a static placeholder \"{}\""
 msgstr ""
 
-#: contrib/site_utils/views.py:87
-msgid "<p><strong>Test html message. This text must be bold</strong>.<br/>If it is true, then letter was received correctly.</p>"
+#: contrib/site_utils/views.py:94
+msgid ""
+"<p><strong>Test html message. This text must be bold</strong>.<br/>If it is "
+"true, then letter was received correctly.</p>"
 msgstr ""
 
-#: contrib/site_utils/views.py:162
+#: contrib/site_utils/views.py:171
 msgid "\"{}\" command executed"
 msgstr ""
 
-#: contrib/site_utils/views.py:166
+#: contrib/site_utils/views.py:175
 msgid "\"{}\" command executed with standard option"
 msgstr ""

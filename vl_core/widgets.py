@@ -1,29 +1,10 @@
 from datetime import timedelta
 
 from django.conf import settings
-from django.forms import TextInput, Media, MultiWidget, NumberInput
+from django.forms import TextInput, MultiWidget, NumberInput
 from django.template.loader import render_to_string
 from django.utils.dateparse import parse_duration
 from django.utils.translation import gettext as _
-
-from django_select2.forms import Select2Widget as BaseSelect2Widget
-
-
-# noinspection PyProtectedMember
-class Select2Widget(BaseSelect2Widget):
-    """
-    Added jquery to widget
-    """
-    def _get_media(self):
-        media = super()._get_media()
-
-        extra = '' if settings.DEBUG else '.min'
-        js = [f'admin/js/vendor/jquery/jquery{extra}.js', 'admin/js/jquery.init.js', 'vl_core/admin_compat.js']
-        js.extend(media._js)
-
-        return Media(js=js, css={'screen': media._css['screen']})
-
-    media = property(_get_media)
 
 
 class ColorPickerWidget(TextInput):

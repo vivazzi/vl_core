@@ -108,7 +108,7 @@ class ResizeOrigImageMixin:
                         new_pic.thumbnail(
                             (app_settings.PIC_FIELD_OPTIMIZE_PARS['max_size']['width'],
                              app_settings.PIC_FIELD_OPTIMIZE_PARS['max_size']['height']),
-                            resample=Image.ANTIALIAS,
+                            resample=Image.Resampling.LANCZOS,
                         )
                         pic_file = BytesIO()
                         new_pic.save(pic_file, **default_compress_settings(new_pic))

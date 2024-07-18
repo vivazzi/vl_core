@@ -47,7 +47,7 @@ def thumb(path: str, w: int, h: int, coordinates=None):
 
             # if w or h is unknown, we can use big number.
             # We can do it, since thumbnail() calculate right aspect ratio of image and apply to new image (i.e. replacing it)
-            new_pic.thumbnail((w or 100000, h or 100000), resample=Image.ANTIALIAS)
+            new_pic.thumbnail((w or 100000, h or 100000), resample=Image.Resampling.LANCZOS)
             new_pic.save(thumb_path, **default_compress_settings(new_pic))
             w, h = new_pic.size
 

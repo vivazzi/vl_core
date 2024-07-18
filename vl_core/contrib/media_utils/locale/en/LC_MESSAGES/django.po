@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-15 12:56+0800\n"
+"POT-Creation-Date: 2024-03-17 07:32+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,14 +21,21 @@ msgstr ""
 msgid "VL Media Utils"
 msgstr ""
 
-#: contrib/media_utils/mixins.py:93
+#: contrib/media_utils/mixins.py:103
 msgid "Thumbnail"
 msgstr ""
 
-#: contrib/media_utils/widgets.py:75
-msgid "The original image will be reduced to {} pixels by width and {} pixels by height. Image quality: {}%<br/>This function is only applicable when saving a newly loaded image.<br/>Compression is not used for vector format files."
+#: contrib/media_utils/mixins.py:108
+msgid "Image"
 msgstr ""
 
-#: contrib/media_utils/widgets.py:86
+#: contrib/media_utils/widgets.py:78
+msgid ""
+"The original image will be reduced to {} pixels by width and {} pixels by "
+"height. Image quality: {}%<br/>This function is only applicable when saving "
+"a newly loaded image.<br/>Compression is not used for vector format files."
+msgstr ""
+
+#: contrib/media_utils/widgets.py:89
 msgid "Use image compression?"
 msgstr ""

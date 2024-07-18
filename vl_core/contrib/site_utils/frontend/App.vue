@@ -64,5 +64,4 @@ ru:
     Management commands: Команды сайта
     Performance: Производительность
     Email testing: Тестирование отправки письма
-    Used components: Используемые компоненты
 </i18n>

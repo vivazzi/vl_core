@@ -21,7 +21,7 @@ def unique_random_seq_for_model_field(model_class, par: str, excluded_obj=None, 
 
     def save(self, *args, **kwargs):
         if not self.token:
-            self.token = get_unique_random_seq(self._meta.model, 'token', None, 40)
+            self.token = unique_random_seq_for_model_field(self._meta.model, 'token', None, 40)
 
         return super().save(*args, **kwargs)
     """

@@ -140,8 +140,13 @@ class FBThumbMediaMixin:
 #
 #
 # def copy_relations_fk(self, old_instance, fk, related_name_for_files='pics'):
+#     map_objects = []
 #     for obj in getattr(old_instance, related_name_for_files).all():
 #         old_obj = copy(obj)
 #         obj.id = None
 #         setattr(obj, fk, self)
 #         _copy_relations_handler(obj, old_obj)
+#
+#         map_objects.append((obj, old_obj))
+#
+#     return map_objects

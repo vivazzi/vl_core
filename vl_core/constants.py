@@ -2,13 +2,6 @@ from os.path import join, abspath, dirname
 
 from django.utils.translation import gettext_lazy as _
 
-# --- cms plugin module names ---
-BASIC = _('Basic')
-DECOR = _('Decoration')
-NAVIGATION = _('Navigation')
-ADDITION = _('Additional')
-SPECIFIC = _('Specific')
-
 
 # --- help texts ---
 TITLE_HT = _('Displayed only in the admin')
@@ -36,7 +29,6 @@ ALPHABET_AND_DIGITS = f'{ALPHABET}{DIGITS}'
 # --- others ---
 NULL_BOOLEAN_DEFAULT_CHOICES = ((None, _('Default')), (True, _('Yes')), (False, _('No')))
 
-PAGE_MENU_LAST_BREAK_BEFORE_DELETE_PAGE = 'Page Menu Last Break Before Delete Page'
 
 # --- frontend ---
 FRONTEND_MANIFEST_PATH = abspath(join(dirname(__file__), 'static/vl_core/frontend/manifest.json'))
